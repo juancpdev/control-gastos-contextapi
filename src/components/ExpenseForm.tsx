@@ -1,71 +1,124 @@
 import { categories } from "../data/categories"
+import DatePicker from 'react-date-picker';
+import 'react-date-picker/dist/DatePicker.css';
+import 'react-calendar/dist/Calendar.css';
+import { DraftExpense, Value } from "../types";
+import { useState, ChangeEvent } from "react";
 
 export default function ExpenseForm() {
-  return (
-    <form className=" space-y-5">
-        <legend className=" font-bold uppercase text-center text-3xl pb-3 border-b-4 border-blue-500">
-            Nuevo Gasto
-        </legend>
 
-        <div className="flex flex-col gap-2">
-            <label 
-                htmlFor="nombre" 
-                className=" text-xl">
-                Nombre Gasto:
-            </label>
+    const [expense, setExpense] = useState<DraftExpense>({
+        expenseName: '',
+        amount: 0,
+        category: '',
+        date: new Date()
+    })
+
+    const handleChange = ((e : ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
+        const {name, value} = e.target
+        const isAmountField = [name].includes('amount')
+
+        setExpense({
+            ...expense,
+            [name] : isAmountField ? +value : value
+        })
+        
+        
+        
+    }) 
+
+    const handleChangeDate = ((value: Value) => {
+        setExpense({
+            ...expense,
+            date: value
+        })
+        
+    })
+
+    return (
+        <form className=" space-y-5">
+            <legend className=" font-bold uppercase text-center text-3xl pb-3 border-b-4 border-blue-500">
+                Nuevo Gasto
+            </legend>
+
+            <div className="flex flex-col gap-2">
+                <label 
+                    htmlFor="expenseName" 
+                    className=" text-xl">
+                    Nombre Gasto:
+                </label>
+                
+                <input 
+                    id="expenseName"
+                    name="expenseName"
+                    placeholder="Añade el Nombre del gasto"
+                    className=" bg-gray-200 p-2"
+                    value={expense.expenseName}
+                    onChange={handleChange}
+                />
+            </div>
+
+            <div className="flex flex-col gap-2">
+                <label 
+                    htmlFor="amount" 
+                    className=" text-xl">
+                    Cantidad:
+                </label>
+                
+                <input 
+                    id="amount"
+                    name="amount"
+                    placeholder="Añade la cantidad del gasto: ej. 300"
+                    className=" bg-gray-200 p-2"
+                    value={expense.amount}
+                    onChange={handleChange}
+                />
+            </div>
+
+            <div className="flex flex-col gap-2">
+                <label 
+                    htmlFor="category" 
+                    className=" text-xl">
+                    Categoria:
+                </label>
+                
+                <select 
+                    id="category"
+                    name="category"
+                    className=" bg-gray-200 p-2"
+                    value={expense.category}
+                    onChange={handleChange}
+                >
+                    <option value="" disabled>-- Seleccione --</option>
+                    {categories.map( (category) => (
+                        <option 
+                            key={category.id} 
+                            value={category.id}
+                        >
+                            {category.name}
+                        </option>
+                    ))}
+                </select>
+            </div>
             
+            <div className="flex flex-col gap-2">
+                <label 
+                    htmlFor="date" 
+                    className=" text-xl">
+                    Fecha Gasto:
+                </label>
+                <DatePicker
+                    className=" bg-gray-200 p-2"
+                    value={expense.date}
+                    onChange={handleChangeDate}
+                />
+            </div>
+
             <input 
-                id="nombre"
-                name="nombre"
-                placeholder="Añade el Nombre del gasto"
-                className=" bg-gray-200 p-2"
+                type="submit" 
+                className=" bg-blue-600 w-full text-white py-2 uppercase font-medium rounded-md"
+                value={'Registrar Gasto'}
             />
-        </div>
-
-        <div className="flex flex-col gap-2">
-            <label 
-                htmlFor="nombre" 
-                className=" text-xl">
-                Cantidad:
-            </label>
-            
-            <input 
-                id="nombre"
-                name="nombre"
-                placeholder="Añade la cantidad del gasto: ej. 300"
-                className=" bg-gray-200 p-2"
-            />
-        </div>
-
-        <div className="flex flex-col gap-2">
-            <label 
-                htmlFor="nombre" 
-                className=" text-xl">
-                Categoria:
-            </label>
-            
-            <select 
-                id="category"
-                name="category"
-                className=" bg-gray-200 p-2"
-            >
-                <option value="" disabled>-- Seleccione --</option>
-                {categories.map( (category) => (
-                    <option 
-                        key={category.id} 
-                        value={category.id}
-                    >
-                        {category.name}
-                    </option>
-                ))}
-            </select>
-        </div>
-
-        <input 
-            type="submit" 
-            className=" bg-blue-600 w-full text-white py-2 uppercase font-medium rounded-md"
-            value={'Registrar Gasto'}
-        />
-    </form>
-  )
+        </form>
+    )
 }
