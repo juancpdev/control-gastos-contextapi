@@ -4,6 +4,7 @@ import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import { DraftExpense, Value } from "../types";
 import { useState, ChangeEvent } from "react";
+import ErrorMessage from "./ErrorMessage";
 
 export default function ExpenseForm() {
 
@@ -14,6 +15,8 @@ export default function ExpenseForm() {
         date: new Date()
     })
 
+    const [error, setError] = useState('')
+
     const handleChange = ((e : ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
         const {name, value} = e.target
         const isAmountField = [name].includes('amount')
@@ -22,9 +25,6 @@ export default function ExpenseForm() {
             ...expense,
             [name] : isAmountField ? +value : value
         })
-        
-        
-        
     }) 
 
     const handleChangeDate = ((value: Value) => {
@@ -35,11 +35,24 @@ export default function ExpenseForm() {
         
     })
 
+    const handleSubmit = (e : React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+
+        if(Object.values(expense).includes('')) {
+            setError('Todos los campos son obligatorios')
+            return
+        }
+        console.log('legal');
+        
+    }
+
     return (
-        <form className=" space-y-5">
+        <form className=" space-y-5" onSubmit={handleSubmit}>
             <legend className=" font-bold uppercase text-center text-3xl pb-3 border-b-4 border-blue-500">
                 Nuevo Gasto
             </legend>
+
+            {error && <ErrorMessage>{error}</ErrorMessage>}
 
             <div className="flex flex-col gap-2">
                 <label 
@@ -116,7 +129,7 @@ export default function ExpenseForm() {
 
             <input 
                 type="submit" 
-                className=" bg-blue-600 w-full text-white py-2 uppercase font-medium rounded-md"
+                className=" bg-blue-600 w-full text-white py-2 uppercase font-medium rounded-md cursor-pointer"
                 value={'Registrar Gasto'}
             />
         </form>
