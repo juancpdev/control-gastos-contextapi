@@ -10,7 +10,7 @@ export type BudgetActions =
 export type BudgetState = {
     budget: number|"",
     modal: boolean,
-    expenses: DraftExpense[]
+    expenses: Expense[]
 }
 
 export const initialState : BudgetState = {
