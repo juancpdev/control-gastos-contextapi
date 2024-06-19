@@ -3,7 +3,7 @@ import DatePicker from 'react-date-picker';
 import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import { DraftExpense, Value } from "../types";
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
 import ErrorMessage from "./ErrorMessage";
 import { useBudget } from "../hook/useBudget";
 
@@ -17,7 +17,14 @@ export default function ExpenseForm() {
     })
 
     const [error, setError] = useState('')
-    const { dispatch } = useBudget()
+    const { dispatch, state } = useBudget()
+    
+    useEffect(() => {
+        if(state.editingId) {
+            const editingExpense = state.expenses.filter( currentExpense => currentExpense.id === state.editingId )[0]
+            setExpense(editingExpense)
+        }
+    }, [state.editingId])
 
     const handleChange = ((e : ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
         const {name, value} = e.target
@@ -47,14 +54,18 @@ export default function ExpenseForm() {
         }
         
         // Agregar un nuevo gasto
-        dispatch({type: 'add-expense', payload: {expense}})
+        if(state.editingId) {
+            dispatch({type: 'update-expense', payload: {expense: {id: state.editingId, ...expense} } })
+        } else {
+            dispatch({type: 'add-expense', payload: {expense}})
+        }
         
     }
 
     return (
         <form className=" space-y-5" onSubmit={handleSubmit}>
             <legend className=" font-bold uppercase text-center text-3xl pb-3 border-b-4 border-blue-500">
-                Nuevo Gasto
+                {state.editingId ? 'Editar Gasto' : 'Nuevo Gasto'}
             </legend>
 
             {error && <ErrorMessage>{error}</ErrorMessage>}
@@ -135,7 +146,8 @@ export default function ExpenseForm() {
             <input 
                 type="submit" 
                 className=" bg-blue-600 w-full text-white py-2 uppercase font-medium rounded-md cursor-pointer"
-                value={'Registrar Gasto'}
+                value={state.editingId ? 'Guardar Cambios' : 'Guardar Gasto'}
+
             />
         </form>
     )
