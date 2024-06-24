@@ -2,7 +2,7 @@ import { DraftExpense, Expense } from "../types"
 import { v4 as uuidv4 } from 'uuid'
 
 export type BudgetActions = 
-    {type: "add-budget", payload: {budget : number|""}} |
+    {type: "add-budget", payload: {budget : number}} |
     {type: 'show-modal'} |
     {type: 'close-modal'} |
     {type: 'add-expense', payload: {expense : DraftExpense}} |
@@ -11,16 +11,26 @@ export type BudgetActions =
     {type: 'update-expense', payload: {expense : Expense}}
 
 export type BudgetState = {
-    budget: number|"",
+    budget: number,
     modal: boolean,
     expenses: Expense[],
     editingId: Expense['id']
 }
 
+const initialBudget = () : number => {
+    const localStorageBudget = localStorage.getItem('budget')
+    return localStorageBudget ? +localStorageBudget : 0
+}
+
+const initialExpenses = () : Expense[] => {
+    const localStorageExpenses = localStorage.getItem('expenses')
+    return localStorageExpenses ? JSON.parse(localStorageExpenses) : []
+}
+
 export const initialState : BudgetState = {
-    budget: 0,
+    budget: initialBudget(),
     modal: false,
-    expenses: [],
+    expenses: initialExpenses(),
     editingId: ''
 }
 
