@@ -60,8 +60,6 @@ export default function ExpenseForm() {
         }
         
         // Validar que no me pase del limite
-        
-        
         if((expense.amount - previousAmount) > remainingBudget) {
             setError('Ese gasto se sale del presupuesto')
             return
