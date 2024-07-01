@@ -1,15 +1,18 @@
 import AmountDisplay from "./AmountDisplay";
 import { useBudget } from "../hook/useBudget";
-
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
 export default function BudgetTracker() {
 
-    const { state, remainingBudget, totalExpenses } = useBudget()
+    const { state, totalExpenses, remainingBudget } = useBudget()
     
     return (
         <div className=" grid grid-cols-1 md:grid-cols-2 w-full space-y-10">
             <div className="mx-auto">
-                <img src="/grafico.jpg" alt="Grafica de gastos" />
+                <CircularProgressbar 
+                    value={state.budget / remainingBudget} 
+                />
             </div>
             <div className=" flex flex-col justify-center items-center gap-8">
                 <button
