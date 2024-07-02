@@ -1,6 +1,6 @@
 import { Category, DraftExpense, Expense } from "../types"
 import { v4 as uuidv4 } from 'uuid'
-// 01 julio
+
 export type BudgetActions = 
     {type: "add-budget", payload: {budget : number}} |
     {type: 'show-modal'} |
