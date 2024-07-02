@@ -26,7 +26,7 @@ function App() {
           <h1 className=" text-3xl font-bold">Planificador de Gastos</h1>
           <div>
             
-            <h3>Calendario en rama header</h3>
+            <h3>Calendario en rama header pero desde la note</h3>
             <p>redes</p>
           </div>
         </header>
