@@ -25,7 +25,8 @@ function App() {
         <header className=" bg-orange-500 p-6 text-center xl:h-screen xl:max-w-96 xl:flex-1">
           <h1 className=" text-3xl font-bold">Planificador de Gastos</h1>
           <div>
-            <h3>Calendario</h3>
+            
+            <h3>Calendario en rama header</h3>
             <p>redes</p>
           </div>
         </header>
