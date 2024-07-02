@@ -1,7 +1,7 @@
 import AmountDisplay from "./AmountDisplay";
 import { useBudget } from "../hook/useBudget";
 import { CircularProgressbarWithChildren, buildStyles } from "react-circular-progressbar";
-import { PencilSquareIcon, TrashIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
 import "react-circular-progressbar/dist/styles.css";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
@@ -14,17 +14,57 @@ export default function BudgetTracker() {
 
     const handleDelete = () => {
         MySwal.fire({
-          title: 'Confirmar eliminación',
-          text: 'Estas seguro que quieres eliminar el presupuesto?',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          cancelButtonText: "Cancelar",
-          confirmButtonText: 'Si, borrar!'
+            title: 'Confirmar eliminación',
+            text: 'Estas seguro que quieres eliminar el presupuesto?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: "Cancelar",
+            confirmButtonText: 'Si, borrar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+            dispatch({ type: "reset-app" })
+            }
+        });
+    };
+
+    const handleEdit = () => {
+        MySwal.fire({
+          title: 'Editar presupuesto',
+          html: `<input id="budget" class="swal2-input" placeholder="Presupuesto" type="number" value=${state.budget} />`,
+          preConfirm: () => {
+            const budgetInput = document.getElementById('budget');
+            if (budgetInput) {
+              const budgetValue = budgetInput.value.trim(); // trim() para eliminar espacios en blanco
+              if (!budgetValue) {
+                Swal.showValidationMessage('El presupuesto no puede estar vacío');
+                return null;
+              }
+              const newBudget = parseInt(budgetValue);
+              if (isNaN(newBudget)) {
+                Swal.showValidationMessage('Por favor, ingrese un valor numérico válido');
+                return null;
+              }
+              if (newBudget < totalExpenses) {
+                Swal.showValidationMessage('El presupuesto no puede ser menor a lo gastado');
+                return null;
+              }
+              return newBudget;
+            } else {
+              MySwal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No se encontró el campo de presupuesto'
+              });
+              return null;
+            }
+          }
         }).then((result) => {
           if (result.isConfirmed) {
-            dispatch({ type: "reset-app" })
+            const newBudget = result.value;
+            dispatch({ type: "edit-app", payload: { budget: newBudget } });
+            Swal.fire('¡Presupuesto actualizado!', '', 'success');
           }
         });
       };
@@ -33,10 +73,10 @@ export default function BudgetTracker() {
         <div>
             <div className="flex gap-3 items-center absolute top-2 right-2">
                 <button 
-                    onClick={() => dispatch({ type: 'edit-app' })}
+                    onClick={handleEdit}
                 >
                     <PencilSquareIcon
-                        className="h-6 w-6 text-gray-500 sombra-edit md:h-7 md:w-7"
+                        className="h-6 w-6 text-gray-500 sombra-edit md:h-7 md:w-7 transition-transform transform hover:scale-95 hover:text-gray-400 duration-300"
                     />
                 </button>
 
@@ -44,7 +84,7 @@ export default function BudgetTracker() {
                     onClick={handleDelete}
                 >
                     <TrashIcon
-                        className="h-6 w-6 text-gray-500 sombra-delete md:h-7 md:w-7"
+                        className="h-6 w-6 text-gray-500 sombra-delete md:h-7 md:w-7 transition-transform transform hover:scale-95 hover:text-gray-400 duration-300"
                     />
                 </button>
             </div>
