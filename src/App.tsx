@@ -22,7 +22,8 @@ function App() {
     <>
       <div className=" xl:flex ">
 
-        <header className=" bg-orange-500 p-6 text-center xl:h-screen xl:max-w-96 xl:flex-1">
+        <header className=" bg-orange-500 p-6 text-center xl:h-screen xl:flex-1 xl:fixed ">
+          
           <h1 className=" text-3xl font-bold">Planificador de Gastos</h1>
           <div>
             
@@ -31,7 +32,7 @@ function App() {
           </div>
         </header>
 
-        <div className="xl:flex-auto">
+        <div className="xl:flex-auto xl:ml-96">
           <div className=" max-w-3xl text-center m-10 p-6 shadow-lg rounded-md bg-white flex justify-center md:mx-auto ">
             {isValidBudget ? <BudgetTracker/> : <BudgetForm /> }
           </div>
