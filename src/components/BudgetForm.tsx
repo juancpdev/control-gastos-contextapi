@@ -3,7 +3,7 @@ import { useBudget } from "../hook/useBudget"
 
 export default function BudgetForm() {
 
-    const [budget, setBudget] = useState<number|"">("")
+    const [budget, setBudget] = useState<number>(0)
     const { dispatch } = useBudget()
 
     const handleChange = (e : React.ChangeEvent<HTMLInputElement>) => {
@@ -11,7 +11,7 @@ export default function BudgetForm() {
     }
 
     const isValid = useMemo(() => {
-        return isNaN(+budget) || budget === ""
+        return isNaN(+budget) 
         
     }, [budget])
 

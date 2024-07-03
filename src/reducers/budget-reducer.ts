@@ -9,6 +9,7 @@ export type BudgetActions =
     {type: 'remove-expense', payload: {id : Expense['id']}} |
     {type: 'get-expense-by-id', payload: {id : Expense['id']}} |
     {type: 'update-expense', payload: {expense : Expense}} |
+    {type: 'edit-app', payload: {budget: number}} |
     {type: 'reset-app'} |
     {type: 'add-filter-category', payload: {id: Category['id']}} 
 
@@ -51,8 +52,6 @@ export const budgetReducer = (
     ) => {
 
     if(action.type === "add-budget") {
-        
-
         return {
             ...state,
             budget: action.payload.budget
@@ -105,6 +104,13 @@ export const budgetReducer = (
             expenses: state.expenses.map(expense => expense.id === action.payload.expense.id ? action.payload.expense : expense),
             modal: false,
             editingId: ''
+        }
+    }
+
+    if(action.type === 'edit-app') {
+        return {
+            ...state,
+            budget: action.payload.budget
         }
     }
 

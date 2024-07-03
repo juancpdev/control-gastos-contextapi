@@ -16,3 +16,8 @@
 .swipeable-list .swipe-action {
   @apply flex justify-center items-center
 }
+
+/* Asegúrate de que estas clases sean incluidas en tu archivo CSS */
+#budget {
+  width: 70%;
+}
