@@ -33,7 +33,7 @@ function App() {
         </header>
 
         <div className="xl:flex-auto xl:ml-96">
-          <div className=" max-w-3xl text-center m-10 p-6 shadow-lg rounded-md bg-white flex justify-center md:mx-auto ">
+          <div className=" max-w-3xl text-center m-10 p-6 shadow-lg rounded-md bg-white flex justify-center md:mx-auto relative">
             {isValidBudget ? <BudgetTracker/> : <BudgetForm /> }
           </div>
 
