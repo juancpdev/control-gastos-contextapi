@@ -4,8 +4,8 @@ import { BudgetActions, BudgetState, budgetReducer, initialState } from "../redu
 type BudgetContextProps = {
     state: BudgetState
     dispatch: Dispatch<BudgetActions>,
-    totalExpenses: number,
-    remainingBudget: number
+    remainingBudget: number,
+    totalExpensesByDate: number
 }
 
 type BudgetProviderProps = {
@@ -15,20 +15,25 @@ type BudgetProviderProps = {
 export const BudgetContext = createContext<BudgetContextProps>(null!)
 
 
-export const BudgetProvider = ( {children} : BudgetProviderProps ) => {
+export const BudgetProvider = ({children} : BudgetProviderProps) => {
 
     const [state, dispatch] = useReducer(budgetReducer, initialState)
+    
+    const totalExpensesByDate = useMemo(() => {
+        return state.expenses
+        .filter((expense) => expense.date.slice(3) === state.date)
+        .reduce((total, expense) => total + expense.amount, 0)
+    }, [state.expenses, state.date]);
 
-    const totalExpenses = useMemo(() => state.expenses.reduce((total, expense) => expense.amount + total, 0), [state.expenses])
-    const remainingBudget = state.budget - totalExpenses
+    const remainingBudget = state.budget - totalExpensesByDate
 
     return (
         <BudgetContext.Provider
             value={{ 
                 state, 
                 dispatch,
-                totalExpenses,
-                remainingBudget
+                remainingBudget,
+                totalExpensesByDate
             }}
         >
             {children}
