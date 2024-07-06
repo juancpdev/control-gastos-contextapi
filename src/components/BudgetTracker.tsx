@@ -9,13 +9,15 @@ import withReactContent from 'sweetalert2-react-content';
 const MySwal = withReactContent(Swal);
 
 export default function BudgetTracker() {
-    const { state, totalExpenses, remainingBudget, dispatch } = useBudget()
-    const percentage = +((totalExpenses / state.budget) * 100).toFixed(2)
+    const { state, remainingBudget, dispatch, totalExpensesByDate } = useBudget()
+console.log("totalExpensesByDate " + totalExpensesByDate);
+
+    const percentage = +((totalExpensesByDate / state.budget) * 100).toFixed(2)
 
     const handleDelete = () => {
         MySwal.fire({
             title: 'Confirmar eliminación',
-            text: 'Estas seguro que quieres eliminar el presupuesto?',
+            text: 'Estas seguro que quieres eliminar el presupuesto de este mes?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -24,7 +26,7 @@ export default function BudgetTracker() {
             confirmButtonText: 'Si, borrar!'
         }).then((result) => {
             if (result.isConfirmed) {
-            dispatch({ type: "reset-app" })
+                dispatch({ type: "remove-budget", payload: {date: state.date} })
             }
         });
     };
@@ -32,11 +34,12 @@ export default function BudgetTracker() {
     const handleEdit = () => {
         MySwal.fire({
           title: 'Editar presupuesto',
-          html: `<input id="budget" class="swal2-input" placeholder="Presupuesto" type="number" value=${state.budget} />`,
+          html: `<input id="budgetEdit" class="swal2-input" placeholder="Presupuesto" type="number" value=${state.budget} />`,
           preConfirm: () => {
-            const budgetInput = document.getElementById('budget');
+            const budgetInput = document.getElementById('budgetEdit') as HTMLInputElement;
+
             if (budgetInput) {
-              const budgetValue = budgetInput.value.trim(); // trim() para eliminar espacios en blanco
+              const budgetValue = budgetInput.value.trim();
               if (!budgetValue) {
                 Swal.showValidationMessage('El presupuesto no puede estar vacío');
                 return null;
@@ -46,7 +49,7 @@ export default function BudgetTracker() {
                 Swal.showValidationMessage('Por favor, ingrese un valor numérico válido');
                 return null;
               }
-              if (newBudget < totalExpenses) {
+              if (newBudget < totalExpensesByDate) {
                 Swal.showValidationMessage('El presupuesto no puede ser menor a lo gastado');
                 return null;
               }
@@ -63,7 +66,7 @@ export default function BudgetTracker() {
         }).then((result) => {
           if (result.isConfirmed) {
             const newBudget = result.value;
-            dispatch({ type: "edit-app", payload: { budget: newBudget } });
+            dispatch({ type: "edit-budget", payload: { budget: newBudget } });
             Swal.fire('¡Presupuesto actualizado!', '', 'success');
           }
         });
@@ -118,7 +121,7 @@ export default function BudgetTracker() {
                     />
                     <AmountDisplay
                         label={'Gastado'}
-                        amount={totalExpenses}
+                        amount={totalExpensesByDate}
                     />
                 </div>
             </div>

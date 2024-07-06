@@ -18,6 +18,14 @@
 }
 
 /* Asegúrate de que estas clases sean incluidas en tu archivo CSS */
-#budget {
+#budgetEdit {
   width: 70%;
+}
+
+.bg-header {
+  background-color:#1c293b
+}
+
+.react-datepicker-wrapper {
+  width: 100%;
 }

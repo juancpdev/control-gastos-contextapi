@@ -1,6 +1,6 @@
 import { categories } from "../data/categories"
-import DatePicker from 'react-date-picker';
-import 'react-date-picker/dist/DatePicker.css';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import 'react-calendar/dist/Calendar.css';
 import { DraftExpense, Value } from "../types";
 import { useState, ChangeEvent, useEffect } from "react";
@@ -13,7 +13,7 @@ export default function ExpenseForm() {
         expenseName: '',
         amount: 0,
         category: '',
-        date: new Date()
+        date: ''
     })
 
     const [error, setError] = useState('')
@@ -41,11 +41,23 @@ export default function ExpenseForm() {
         })
     }) 
 
-    const handleChangeDate = ((value: Value) => {
-        setExpense({
-            ...expense,
-            date: value
-        })
+    const handleChangeDate = ((value: Date | null) => {
+        if (value) {
+            const fecha = value.toString();
+            const date = new Date(fecha);
+    
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+    
+            const formatDate = `${day}/${month}/${year}`
+    console.log(formatDate);
+    
+            setExpense({
+                ...expense,
+                date: formatDate
+            });
+        }
         
     })
     
@@ -77,7 +89,7 @@ export default function ExpenseForm() {
             expenseName: '',
             amount: 0,
             category: '',
-            date: new Date()
+            date: ''
         })
         setPreviousAmount(0)
     }
@@ -156,11 +168,13 @@ export default function ExpenseForm() {
                     className=" text-xl">
                     Fecha Gasto:
                 </label>
-                <DatePicker
-                    className=" bg-gray-200 p-2"
-                    value={expense.date}
-                    onChange={handleChangeDate}
-                />
+                <div>
+                    <DatePicker
+                        className=" bg-gray-200 p-2 w-full "
+                        value={expense.date}
+                        onChange={handleChangeDate}
+                    />
+                </div>
             </div>
 
             <input 
