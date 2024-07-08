@@ -1,4 +1,4 @@
-import { Category, DraftExpense, Expense } from "../types"
+import { BudgetMap, Category, DraftExpense, Expense } from "../types"
 import { v4 as uuidv4 } from 'uuid'
 
 export type BudgetActions = 
@@ -13,7 +13,8 @@ export type BudgetActions =
     {type: 'get-expense-by-id', payload: {id : Expense['id']}} |
     {type: 'reset-app'} |
     {type: 'add-filter-category', payload: {id: Category['id']}} |
-    {type: 'updated-date', payload: {date: string}} 
+    {type: 'updated-date', payload: {date: string}} |
+    {type: 'change-date', payload: {date: string}}
 
 export type BudgetState = {
     budget: number,
@@ -35,6 +36,11 @@ const initialExpenses = () : Expense[] => {
     return localStorageExpenses ? JSON.parse(localStorageExpenses) : []
 }
 
+const initialBudgetMap = () : BudgetMap => {
+    const localStorageExpenses = localStorage.getItem('budgetMap')
+    return localStorageExpenses ? JSON.parse(localStorageExpenses) : {}
+}
+
 const initialDate = () : string => {
     const dateNow = new Date();
     const year = dateNow.getFullYear();
@@ -50,7 +56,7 @@ export const initialState: BudgetState = {
     editingId: '',
     currentCategory: '',
     date: initialDate(),
-    budgetMap: {}
+    budgetMap: initialBudgetMap()
 };
 
 
@@ -184,6 +190,13 @@ export const budgetReducer = (
             date, // Actualizar la fecha seleccionada
             budget: existingBudget ?? state.budget // Usar el presupuesto existente o el global
         };
+    }
+
+    if (action.type === "change-date") {
+        return {
+            ...state,
+            date: action.payload.date
+        }
     }
 
     return state

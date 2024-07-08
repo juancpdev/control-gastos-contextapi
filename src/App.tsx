@@ -9,6 +9,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import DateTitle from "./components/DateTitle";
 
 const MySwal = withReactContent(Swal)
 
@@ -78,10 +79,17 @@ function App() {
               onClick={handleResetApp}
             >
               Reset App
-            </button>
+          </button>
+          <div>
+          <p className="text-sky-400 xl:flex items-end">Created By <a target="_blank" href="https://www.github.com/juancpdev">@jpdev</a></p>
+
+          </div>
         </header>
 
         <div className="xl:flex-auto xl:ml-96">
+        <div className="shadow-lg rounded-3xl bg-white max-w-3xl text-center m-10 p-3 flex justify-center md:mx-auto">
+          <DateTitle/>
+        </div>
           <div className=" max-w-3xl text-center m-10 p-6 shadow-lg rounded-md bg-white flex justify-center md:mx-auto relative">
             {isValidBudget && isValidDate ? <BudgetTracker/> : <BudgetForm /> }
           </div>
