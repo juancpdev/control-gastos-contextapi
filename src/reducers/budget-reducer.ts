@@ -97,14 +97,14 @@ export const budgetReducer = (
 
     if(action.type === 'remove-budget') {
         // Remover el presupuesto para la fecha especificada
-        const { [action.payload.date]: removed, ...remainingBudgetMap } = state.budgetMap;
-
+        const updatedBudgetMap = { ...state.budgetMap };
+        delete updatedBudgetMap[action.payload.date];
+        
         return {
             ...state,
             budget: 0,
             expenses: state.expenses.filter(expense => expense.date.slice(3) !== action.payload.date),
-            date: '',
-            budgetMap: remainingBudgetMap
+            budgetMap: updatedBudgetMap
         }
     }
 
@@ -193,9 +193,19 @@ export const budgetReducer = (
     }
 
     if (action.type === "change-date") {
+        const { date } = action.payload;
+        
+        // Parsear la fecha para obtener mes y año
+        const [month, year] = date.split('/');
+        const monthYear = `${month}/${year}`;
+
+        // Verificar si ya existe un presupuesto para ese mes y año
+        const existingBudget = state.budgetMap[monthYear];
+
         return {
             ...state,
-            date: action.payload.date
+            date: action.payload.date,
+            budget: existingBudget ?? state.budget 
         }
     }
 

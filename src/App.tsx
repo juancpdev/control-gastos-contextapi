@@ -62,48 +62,53 @@ function App() {
     <>
       <div className=" xl:flex ">
 
-        <header className=" bg-header p-6 text-center xl:h-screen xl:flex-1 xl:fixed ">
-          <img className="w-72 px-8 m-auto" src="/logo2.png" alt="Logo CtrlGast" />
-          
-          <p className="text-white mt-6 xl:mt-10">Selecciona la fecha</p>
-          <DatePicker
-            className="bg-gray-200 text-center rounded-md cursor-pointer"
-            onChange={handleDateChange}
-            showMonthYearPicker
-            dateFormat="MM/yyyy"
-            value={state.date}
-          />
-          <button 
-              className="bg-slate-400 rounded-md p-2 font-bold text-white cursor-pointer disabled:opacity-50 disabled:cursor-default mt-5 xl:mt-10"
-              disabled={!canRestartApp}
-              onClick={handleResetApp}
-            >
-              Reset App
-          </button>
+        <header className=" bg-header p-6 text-center xl:h-screen xl:flex xl:flex-col xl:fixed xl:justify-between">
           <div>
-          <p className="text-sky-400 xl:flex items-end">Created By <a target="_blank" href="https://www.github.com/juancpdev">@jpdev</a></p>
-
+            <img className="w-72 px-8 m-auto" src="/logo2.png" alt="Logo CtrlGast" />
+            
+            <p className="text-white mt-6 xl:mt-10">Selecciona la fecha</p>
+            <DatePicker
+              className="bg-gray-200 text-center rounded-md cursor-pointer"
+              onChange={handleDateChange}
+              showMonthYearPicker
+              dateFormat="MM/yyyy"
+              value={state.date}
+            />
+            <button 
+                className="bg-slate-400 rounded-md p-2 font-bold text-white cursor-pointer disabled:opacity-50 disabled:cursor-default mt-5 xl:mt-10"
+                disabled={!canRestartApp}
+                onClick={handleResetApp}
+              >
+                Reset App
+            </button>
+            
           </div>
+          <p className="none-header text-sky-400 xl:flex items-end">Created By <a target="_blank" href="https://www.github.com/juancpdev">@jpdev</a></p>
+
+          
         </header>
 
         <div className="xl:flex-auto xl:ml-96">
-        <div className="shadow-lg rounded-3xl bg-white max-w-3xl text-center m-10 p-3 flex justify-center md:mx-auto">
-          <DateTitle/>
-        </div>
-          <div className=" max-w-3xl text-center m-10 p-6 shadow-lg rounded-md bg-white flex justify-center md:mx-auto relative">
-            {isValidBudget && isValidDate ? <BudgetTracker/> : <BudgetForm /> }
+          <div className="shadow-lg rounded-3xl bg-white max-w-3xl text-center m-10 p-3 flex justify-center md:mx-auto">
+            <DateTitle/>
           </div>
+            <div className=" max-w-3xl text-center m-10 p-6 shadow-lg rounded-md bg-white flex justify-center md:mx-auto relative">
+              {isValidBudget && isValidDate ? <BudgetTracker/> : <BudgetForm /> }
+            </div>
 
-          {isValidBudget && isValidDate && (
-              <main className="max-w-3xl m-10 md:mx-auto flex flex-col gap-4">
-                <FilterByCategory/>
-                <ExpenseList/>
-                <ExpenseModal/>
-              </main>
-            )
-          }
+            {isValidBudget && isValidDate && (
+                <main className="max-w-3xl m-10 md:mx-auto flex flex-col gap-4">
+                  <FilterByCategory/>
+                  <ExpenseList/>
+                  <ExpenseModal/>
+                </main>
+              )
+            }
         </div>
         
+        <footer className="bg-header p-6 text-center xl:h-screen xl:flex xl:flex-col xl:fixed xl:justify-between none">
+          <p className="text-sky-400 xl:flex items-end">Created By <a target="_blank" href="https://www.github.com/juancpdev">@jpdev</a></p>
+        </footer>
         
       </div>
     </>
