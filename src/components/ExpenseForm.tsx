@@ -51,7 +51,6 @@ export default function ExpenseForm() {
             const year = date.getFullYear();
     
             const formatDate = `${day}/${month}/${year}`
-    console.log(formatDate);
     
             setExpense({
                 ...expense,

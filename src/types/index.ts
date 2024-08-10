@@ -6,6 +6,10 @@ export type Expense = {
     date: string
 }
 
+export type BudgetMap = {
+    [key: string]: number 
+}
+
 export type DraftExpense = Omit<Expense, 'id'>
 
 type ValuePiece = Date | null;

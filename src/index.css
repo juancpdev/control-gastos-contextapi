@@ -29,3 +29,18 @@
 .react-datepicker-wrapper {
   width: 100%;
 }
+
+.none {
+  @media (min-width: 1280px) {
+    display: none !important;
+  }
+  
+}
+
+.none-header {
+  display: none !important;
+  @media (min-width: 1280px) {
+    display: block !important;
+  }
+  
+}

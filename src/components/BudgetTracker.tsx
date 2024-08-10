@@ -10,7 +10,6 @@ const MySwal = withReactContent(Swal);
 
 export default function BudgetTracker() {
     const { state, remainingBudget, dispatch, totalExpensesByDate } = useBudget()
-console.log("totalExpensesByDate " + totalExpensesByDate);
 
     const percentage = +((totalExpensesByDate / state.budget) * 100).toFixed(2)
 
@@ -79,7 +78,7 @@ console.log("totalExpensesByDate " + totalExpensesByDate);
                     onClick={handleEdit}
                 >
                     <PencilSquareIcon
-                        className="h-6 w-6 text-gray-500 sombra-edit md:h-7 md:w-7 transition-transform transform hover:scale-95 hover:text-gray-400 duration-300"
+                        className="h-6 w-6 text-sky-500 sombra-edit md:h-7 md:w-7 transition-transform transform hover:scale-95 hover:text-sky-400 duration-300"
                     />
                 </button>
 
@@ -87,7 +86,7 @@ console.log("totalExpensesByDate " + totalExpensesByDate);
                     onClick={handleDelete}
                 >
                     <TrashIcon
-                        className="h-6 w-6 text-gray-500 sombra-delete md:h-7 md:w-7 transition-transform transform hover:scale-95 hover:text-gray-400 duration-300"
+                        className="h-6 w-6 text-sky-500 sombra-delete md:h-7 md:w-7 transition-transform transform hover:scale-95 hover:text-sky-400 duration-300"
                     />
                 </button>
             </div>

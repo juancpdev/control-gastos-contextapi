@@ -1,11 +1,20 @@
+import { useState } from "react";
 import { categories } from "../data/categories";
 import { useBudget } from "../hook/useBudget";
 
 export default function FilterByCategory() {
-    const {dispatch} = useBudget()
+    const {dispatch, state} = useBudget()
+    const [selectedCategory, setSelectedCategory] = useState("");
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const value = e.target.value;
+        setSelectedCategory(value);
         dispatch({ type: 'add-filter-category', payload: {id : e.target.value} })
+    }
+
+    const handleFilter = () => {
+        setSelectedCategory("");
+        dispatch({ type: 'add-filter-category', payload: {id : ""} })
     }
 
     return (
@@ -17,6 +26,7 @@ export default function FilterByCategory() {
                         id="category" 
                         className="bg-slate-100 p-3 flex-1 rounded cursor-pointer"
                         onChange={handleChange}
+                        value={selectedCategory}
                     >
                         <option value="">-- Todas las categorias</option>
                         {categories.map(category => (
@@ -28,6 +38,17 @@ export default function FilterByCategory() {
                             </option>
                         ))}
                     </select>
+                </div>
+                <div className="flex justify-center mt-6">
+                    {state.currentCategory !== "" && (
+                        <button
+                            onClick={handleFilter}
+                            className=" rounded-xl text-sm border border-red-600 text-red-600 px-4 py-2 md:text-lg"
+                        >
+                            Eliminar Filtro X
+                        </button>
+                        
+                    )}
                 </div>
             </form>
         </div>

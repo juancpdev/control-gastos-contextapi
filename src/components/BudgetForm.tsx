@@ -57,7 +57,7 @@ export default function BudgetForm() {
                 </div>
                 <input 
                     type="submit"
-                    className="bg-red-500 text-white w-full rounded-md font-bold cursor-pointer p-1 disabled:opacity-40 disabled:cursor-not-allowed"
+                    className=" bg-sky-400 text-white w-full rounded-md font-bold cursor-pointer p-1 hover:bg-sky-600 transition duration-300"
                 />
             </form>
         </>
