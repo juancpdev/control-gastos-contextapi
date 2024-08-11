@@ -122,7 +122,7 @@ export default function ExpenseForm() {
                 <label 
                     htmlFor="amount" 
                     className=" text-xl">
-                    Cantidad:
+                    Monto:
                 </label>
                 
                 <input 
