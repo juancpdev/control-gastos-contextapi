@@ -2,7 +2,7 @@
 🔗 **URL:** [CtrlGast](https://ctrlgast.netlify.app)
 
 ## 🛠️ Tecnologías
-- HTML / CSS / JavaScript
+- HTML / CSS / JavaScript / TypeScript
 - React
 - Tailwind CSS
 
